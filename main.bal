@@ -7,6 +7,7 @@ import ballerina/lang.array;
 import ballerina/observe;
 import ballerinax/prometheus as _;
 
+
 // Service configuration
 configurable int port = 8080;
 
@@ -104,6 +105,15 @@ service / on new http:Listener(port) {
     
     // Resource for redirecting from short URL to original URL
     resource function get [string shortCode]() returns http:Response|error {
+        // Skip processing for special paths like metrics
+        if shortCode == "metrics" {
+            // Let Ballerina's built-in metrics handler process this
+            http:Response response = new;
+            response.statusCode = 404;
+            response.setPayload("Not a short URL");
+            return response;
+        }
+        
         UrlMapping? mapping = getUrl(shortCode);
         
         http:Response response = new;
@@ -155,9 +165,6 @@ service / on new http:Listener(port) {
         }
         return urlList;
     }
-
-    // Resource for metrics endpoint (Prometheus will scrape this)
-    // This is automatically exposed by the Prometheus exporter
 }
 
 //=============================================================================

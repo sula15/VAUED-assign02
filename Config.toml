@@ -1,0 +1,7 @@
+[ballerina.observe]
+metricsEnabled = true
+metricsReporter = "prometheus"
+
+[ballerinax.prometheus]
+host = "::"         # listen on all IPv4 *and* IPv6
+port = 9796

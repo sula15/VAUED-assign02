@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s     # How frequently to scrape targets
+  evaluation_interval: 15s # How frequently to evaluate rules
+
+# Scrape configurations
+scrape_configs:
+  - job_name: 'url-shortener'
+    static_configs:
+      - targets: ['localhost:8080']
